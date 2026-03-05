@@ -1,8 +1,10 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect,useRef } from 'react';
 import * as GaussianSplats3D from '@mkkellogg/gaussian-splats-3d';
 
 
 export const useViewer= ({ scene }) => {
+  const viewerRef = useRef(null);
+
   const init = useCallback(() => {
     const viewer = new GaussianSplats3D.DropInViewer();
     viewer.addSplatScenes(
@@ -15,9 +17,12 @@ export const useViewer= ({ scene }) => {
       true
     );
     scene.add(viewer);
+    viewerRef.current = viewer;
   }, [scene]);
 
   useEffect(() => {
     init();
-  }, []);
+  }, [init]);
+
+  return viewerRef.current;
 };
